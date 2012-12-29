@@ -28,7 +28,7 @@
             height: 100px;
         }
 
-        .box1 { left: 150px; top: 150px; background: blue; }
+        .box1 { background: blue; }
 
     </style>
 
@@ -38,20 +38,8 @@
 
 <body>
 
-    <div id="container">
+    <div id="container" class="win-ui-light">
 
-        <div id="tCircle">
-            <div>Rotation</div>
-
-            <div id="blue" class="box box1">
-                <input type="text" style="display: none;" data-width="150"
-                    data-cursor="true"
-                    data-thickness=".3" data-displayinput="false"
-                    value="75" class="dial">
-            </div>
-        </div>
-
-       
         <div>
             <h4 style="color: red">Layers</h4>
             <div id="pnlLayer"></div>
@@ -60,20 +48,23 @@
             <h4 style="color: red">Properties</h4>
 
             <div>
-                <div id="cPosition">
-                    <button style="color: blue" id="btnPosition">Position</button>
-                    <input id="posRange" style="position: absolute; display: none" type="range" />
+                <div id="tPosition">
+                    <button id="btnPosition" class="smallListItem">Position</button>
+                    <!--<input id="posRange" style="position: absolute; display: none" type="range" />-->
                 </div>
 
                 <!-- <input type="button" style="width: 10px" value="X" id="btnPosX" />
                 <input type="button" style="width: 10px" value="Y" id="btnPosY" />-->
 
-                <br />
-                <button  style="color: blue"  id="btnRotation" >Rotation</button>
-                <br />
+                
+                <div id="tCircle">
+                    <button id="btnRotation" class="smallListItem">Rotation</button>
+                </div>
+
+              <!--  <br />
                 <button style="color: blue" id="btnScale">Scale</button>
                 <br />
-                <button style="color: blue" id="btnImage">Image</button>
+                <button style="color: blue" id="btnImage">Image</button>-->
 
             </div>
 
