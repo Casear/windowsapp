@@ -7,10 +7,61 @@
         ready: function (element, options) {
             
             onload();
-            initCircle();
+            
             initLayer();
         }
     });
+
+    function getToolsByMoving($tools,pos) {
+        
+        var x = pos.x - 50,
+            y = pos.y - 50;
+
+        return $('<div />')
+                .width(100)
+                .height(100)
+                .css({ position: 'absolute', left: x, top: y })
+                .append($tools)
+            .bind("MSPointerDown MSPointerMove MSPointerOver MSPointerOver MSPointerUp", function (ev) {
+                switch (ev.type) {
+
+                    case 'MSPointerMove':
+                        $(this).css({
+                            left: ev.originalEvent.x - 50,
+                            top: ev.originalEvent.y - 50
+                        });
+
+                        //momentum.addPoint([ev.position.x, ev.position.y]);
+                        break;
+
+                    case 'MSPointerUp':
+
+                        $(this).unbind('MSPointerMove MSPointerUp');
+                        $(this).bind();
+
+                        //var left = parseInt(box.css("left"), 10);
+                        //var top = parseInt(box.css("top"), 10);
+
+                        //var dir_left = -1;
+                        //var dir_top = -1;
+
+                        //momentum.animate(function (x, y) {
+                        //    left += x;
+                        //    top += y;
+
+                        //    box.css({
+                        //        left: left,
+                        //        top: top
+                        //    });
+                        //});
+                        break;
+                }
+            })
+            //.on('MSPointerMove', function (evt) {
+            //    console.log(evt);
+            //})
+            //.insertAfter($(this));
+    }
 
     function initLayer() {
         var anx = window.animination;
@@ -45,157 +96,59 @@
       
     }
 
-    function initCircle() {
-        /**
-           * setup hammer
-           */
-        
-        var elBlue = document.getElementById('blue');
-
-        var hammerBlue = new Hammer(elBlue, {
-            drag_min_distance: 0,
-            drag_horizontal: true,
-            drag_vertical: true,
-            transform: false,
-            hold: false,
-            prevent_default: true
-        });
-
-        hammerBlue.ontap = function (ev) {
-            //$(".dial").knob();
-        };
-
-        /**
-         * on drag
-         */
-        hammerBlue.ondrag = function (ev) {
-
-            var touches = ev.originalEvent.touches || [ev.originalEvent];
-            for (var t = 0; t < touches.length; t++) {
-                var el = touches[t].target;
-
-                var left = ev.touches[t].x - (100 / 2);
-                var top = ev.touches[t].y - (100 / 2);
-
-                if (left < 0) {
-                    left = 0;
-                }
-                if (top < 0) {
-                    top = 0;
-                }
-
-                el.style.left = left + 'px';
-                el.style.top = top + 'px';
-
-            }
-
-        };
-    }
-
-    //function initCircle() {
-    //    var drag;
-    //    var zIndex = 10;
-
-    //    var watchDrag = function() {
-    //        if (!drag.length) {
-    //            return;
-    //        }
-
-    //        for (var d = 0; d < drag.length; d++) {
-    //            var left = drag[d].pos.x - (drag[d].size.width / 2);
-    //            var top = drag[d].pos.y - (drag[d].size.height / 2);
-
-    //            if (left < 0) {
-    //                left = 0;
-    //            }
-    //            if (top < 0) {
-    //                top = 0;
-    //            }
-
-    //            drag[d].el.style.left = left + 'px';
-    //            drag[d].el.style.top = top + 'px';
-    //        }
-    //    }
-
-
-
-    //    $('#tCircle').hammer({
-    //        drag_min_distance: 0,
-    //        drag_horizontal: true,
-    //        drag_vertical: true,
-    //        transform: false,
-    //        hold: false,
-    //        prevent_default: true
-    //    })
-    //    .on('tap', function (ev) {
-
-    //        //$(".dial").knob();
-
-    //        $("#tWrapper").hammer({
-    //                drag_min_distance: 0,
-    //                drag_horizontal: true,
-    //                drag_vertical: true,
-    //                transform: false,
-    //                hold: false,
-    //                prevent_default: true
-    //            })
-    //            //.on('tap', function (ev) {
-    //            //    var touches = ev.originalEvent.touches || [ev.originalEvent];
-    //            //    for (var t = 0; t < ev.touches.length; t++) {
-    //            //        var el = touches[t].target;
-    //            //        el.style.zIndex = 10;
-    //            //    }
-    //            //})
-    //            .on('drag', function (ev) {
-
-    //                var touches = ev.originalEvent.touches || [ev.originalEvent];
-    //                for (var t = 0; t < touches.length; t++) {
-    //                    var el = touches[t].target;
-
-    //                    var left = ev.touches[t].x - (150 / 2);
-    //                    var top = ev.touches[t].y - (150 / 2);
-
-    //                    if (left < 0) {
-    //                        left = 0;
-    //                    }
-    //                    if (top < 0) {
-    //                        top = 0;
-    //                    }
-
-    //                    el.style.left = left + 'px';
-    //                    el.style.top = top + 'px';
-
-    //                }
-    //            });
-
-    //    });
-       
-    //}
 
     function onload() {
-        //var clr = document.getElementById('btnPosition');
-        //clr.addEventListener('MSPointerDown', function (evt) {
+       
+        (function () {
+            var counter = 1;
 
-        //    var x = evt.currentPoint.rawPosition.x,
-        //           y = evt.currentPoint.rawPosition.y;
-        //    $('#posRange').css({ left: evt.x, top: evt.y }).show();
-        //});
+
+            $('#tPosition').on('MSPointerDown', '#btnPosition', function (evt) {
+
+                if (counter++ % 2) {
+                    $(this).after(getToolsByMoving(
+                        $('<input type="range" />'),
+                        { x: evt.originalEvent.x, y: evt.originalEvent.y }));
+                }
+                else {
+                    $(this).parent().children('div').remove();
+                }
+
+            });
+
+        }());
+
+
+        (function () {
+            var counter = 1;
+
+
+            $('#tCircle').on('MSPointerDown', '#btnRotation', function (evt) {
+
+                if (counter++ % 2) {
+                    var circle = $('<input type="hidden" >')
+                    .attr('data-width', 150)
+                    .attr('data-cursor', true)
+                    .attr('data-thickness', ".3")
+                    .attr('data-displayinput', false)
+                    .val(75)
+                    .knob();
+
+                    $(this).after(getToolsByMoving(
+                        circle,
+                        { x: evt.originalEvent.x, y: evt.originalEvent.y }));
+                }
+                else {
+                    $(this).parent().children('div').remove();
+                }
+
+            });
+
+        }());
+
+       
+
         
-
-        $('#cPosition').on('MSPointerDown', '#btnPosition', function (evt) {
-            $('#posRange')
-                //.css({ left: evt.x, top: evt.y })
-                .show();
-        })
-        .on('MSPointerMove', 'posRange', function (evt) {
-            console.log(evt);
-        });
-        
-
-        $('#posRange').on('MSPointerDown', function (evt) {
-           // $(this).hide();
-        })
-        .on('');
     }
 
 })();
