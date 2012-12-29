@@ -2,52 +2,50 @@
     "use strict";
 
 
-    var dataList = new WinJS.Binding.List(window.animination.images);
-
-
-
-    var tools = new WinJS.Binding.List([
-        { title: "Position" },
-        { title: "Rotation" },
-        { title: "Scale" },
-        { title: "Image" }
-    ]);
-
-    WinJS.Namespace.define("ToolsData", {itemList:tools});
-    // Create a namespace to make the data publicly
-    // accessible. 
-    var publicMembers =
-        {
-            itemList: dataList
-        };
-    WinJS.Namespace.define("DataExample", publicMembers);
 
     var page = WinJS.UI.Pages.define("/html/menu.html", {
         ready: function (element, options) {
-            var listView = element.querySelector('#lvLayers').winControl;
-            //var lvTools = element.querySelector("#lvProperties").winControl;
-
-            // Notify the ListView to calculate its layout 
-            listView.forceLayout();
-            //lvTools.forceLayout();
-
-            function itemInvokedHandler(eventObject) {
-                eventObject.detail.itemPromise.done(function (invokedItem) {
-
-                    // Access item data from the itemPromise 
-                    console.log && console.log("The item at index " + invokedItem.index + " is "
-                        + invokedItem.data.title + " with a text value of "
-                        + invokedItem.data.text, "sample", "status");
-                });
-            }
-
-
-            listView.addEventListener("iteminvoked", itemInvokedHandler, false);
-            //lvTools.addEventListener("MSPointerDown", toolsInvokedHandler, false);
+            
             onload();
             initCircle();
+            initLayer();
         }
     });
+
+    function initLayer() {
+        var anx = window.animination;
+        var imgs = anx.images;
+        var pnl = $('#pnlLayer');
+
+        var tapHandler = function (ev) {
+           
+            anx.setAnimation($(this).data('title'));
+        };
+
+        for (var i = 0; i < imgs.length; i++) {
+            var item = $('<div class="smallListIcon" />')
+                .data('title', imgs[i].title)
+            .append($('<img  />').attr('src', imgs[i].url))
+            .append($('<span />').text(imgs[i].title))
+                .hammer({
+                                    drag_min_distance: 0,
+                                    drag_horizontal: true,
+                                    drag_vertical: true,
+                                    transform: false,
+                                    hold: false,
+                                    prevent_default: true
+                                })
+            .on('tap', tapHandler)
+            .on('hold', tapHandler)
+            .on('release', function () {
+                anx.setAnimation(null);
+            });
+            
+            pnl.append(item);
+        }
+
+      
+    }
 
     function initCircle() {
         /**

@@ -5,6 +5,17 @@
     <style>
 
         .smallListIcon {
+            margin:5px;
+            width:400px;
+        }
+
+        .smallListIcon img {
+            width: 30px;
+            height: 30px;
+            
+        }
+
+        .smallListIcon span {
             width: 30px;
             height: 30px;
             
@@ -39,21 +50,10 @@
             </div>
         </div>
 
-        <div id="mediumListIconTextTemplate" data-win-control="WinJS.Binding.Template">
-            <div style="width: 400px">
-
-                <!-- Displays the "title" field. -->
-                <img src="#" class="smallListIcon" data-win-bind="src: url" />
-                <span  data-win-bind="innerText: title"></span>
-
-            </div>
-        </div>
+       
         <div>
             <h4 style="color: red">Layers</h4>
-            <div id="lvLayers" data-win-control="WinJS.UI.ListView"
-                data-win-options="{ itemDataSource : DataExample.itemList.dataSource,
-            itemTemplate: select('#mediumListIconTextTemplate')}">
-            </div>
+            <div id="pnlLayer"></div>
         </div>
         <div id="pnlTools">
             <h4 style="color: red">Properties</h4>
@@ -76,11 +76,6 @@
 
             </div>
 
-
-            <!--            <div id="lvProperties" data-win-control="WinJS.UI.ListView"
-                data-win-options="{ itemDataSource : ToolsData.itemList.dataSource,
-            itemTemplate: select('#mediumListIconTextTemplate')}">
-            </div>-->
 
         </div>
     </div>
