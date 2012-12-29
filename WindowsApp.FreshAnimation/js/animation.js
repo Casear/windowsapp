@@ -58,26 +58,38 @@
     }
     function checkAnimation() {
         if (startRec) {
-          
-            if (obj.animationObjId && mouseDown) {
-                if (htSelectedDisplayObjectPosition) {
+
+            if (obj.animationObjId) {
+                if (!obj.animationFrame[obj.Frame])
                     obj.animationFrame[obj.Frame] = {};
-                    obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, y: obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y };
-                    
+                var x = 0, y = 0, v = 0;
+                if (mouseDown && htSelectedDisplayObjectPosition) {
+                    x = obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x;
+                    x = obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y;
+                } else {
+                    x = obj.animationObj[obj.animationObjId].get("x");
+                    y = obj.animationObj[obj.animationObjId].get("y");
                 }
+                v = obj.animationObj[obj.animationObjId].get("angle");
+                if (obj.animationFrame[obj.Frame][obj.animationObjId]) {
+                    obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: x, y: y, v: v };
+                }
+
             }
             obj.Frame++;
         }
         if (startPlay || startRec) {
-            while (playFrame <= obj.Frame) {
+            if (playFrame <= obj.Frame) {
                 if (this.animationFrame[playFrame]) {
-                    for(var node in obj.animationFrame[playFrame]){
+                    for (var node in obj.animationFrame[playFrame]) {
                         obj.animationObj[node].move(obj.animationFrame[playFrame][node].x, obj.animationFrame[playFrame][node].y);
+                        obj.animationObj[node].set("angle", obj.animationFrame[playFrame][node].v);
+                        console.log(node, obj.animationFrame[playFrame][node].x, obj.animationFrame[playFrame][node].y);
                     };
                 }
                 playFrame++;
             }
-            
+
         }
 
         requestAnimFrame();
@@ -90,14 +102,21 @@
         startRec = false;
     }
     this.setAnimation = function (id) {
+        if (id) {
+            if (obj.animationObj[id]) {
+                obj.animationObjId = id;
+            } else {
 
-        if (obj.animationObj[id]) {
-            obj.animationObjId = id;
+
+            }
         } else {
-
-
+            obj.animationObjId = null;
         }
-
+    }
+    this.setAngle = function (angle) {
+        if (obj.animationObjId) {
+            obj.animationObj[obj.animationObjId].set("angle", obj.animationFrame[playFrame][node].v);
+        }
     }
     this.animationObj["sky"] = new collie.MovableObject({ backgroundImage: "sky" });
     this.animationObj["sky"].addTo(oLayer);
@@ -108,7 +127,7 @@
     $(oLayer.getElement()).hammer({
 
     }).bind("drag", function (ev) {
-        console.log(ev.position.x, ev.position.y);
+       
         mouseDown = true;
         if (!htStartPosition) {
             htStartPosition = { x: ev.position.x, y: ev.position.y };
@@ -120,14 +139,12 @@
                 if (htSelectedDisplayObjectPosition) {
                     obj.animationObj[obj.animationObjId].move(obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y)
                     console.log("Move ", obj.animationObj[obj.animationObjId].get("x") + htStartPosition.x - htSelectedDisplayObjectPosition.x, obj.animationObj[obj.animationObjId].get("y") + htStartPosition.y - htSelectedDisplayObjectPosition.y);
-
                 }
-
             }
         }
     }).bind("release", function (ev) {
         mouseDown = false;
-        obj.animationObjId = null;
+
         htStartPosition = null;
         htSelectedDisplayObjectPosition = null;
     });
