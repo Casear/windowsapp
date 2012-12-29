@@ -8,14 +8,39 @@
 
         <div id="mediumListIconTextTemplate" data-win-control="WinJS.Binding.Template">
             <div>
-
+                
                 <!-- Displays the "title" field. -->
-                <h4 data-win-bind="innerText: title"></h4>
+                <div style="width:200px" data-win-bind="innerText: title"></div>
 
             </div>
         </div>
-        <div data-win-control="WinJS.UI.ListView" 
+        <div>
+            <h4 style="color:red" >Layers</h4>
+        <div id="lvLayers" data-win-control="WinJS.UI.ListView" 
             data-win-options="{ itemDataSource : DataExample.itemList.dataSource,
             itemTemplate: select('#mediumListIconTextTemplate')}"></div>
+        </div>
+        <div>
+            <h4 style="color: red">Properties</h4>
+            <!--<span>Position</span>
+            <input type="button" value="Position" id="btnPosition" />
+            <input type="button" style="width:10px" value="X" id="btnPosX" />
+            <input type="button" style="width: 10px" value="Y" id="btnPosY" />
+
+            <br />
+            <input type="button" value="Rotation" id="btnRotation" />
+            <br />
+            <input type="button" value="Scale" id="btnScale" />
+            <br />
+            <input type="button" value="Image" id="btnImage" />-->
+
+
+            <div id="lvProperties" data-win-control="WinJS.UI.ListView"
+                data-win-options="{ itemDataSource : ToolsData.itemList.dataSource,
+            itemTemplate: select('#mediumListIconTextTemplate')}">
+            </div>
+
+        </div>
+        
     </body>
 </html>
