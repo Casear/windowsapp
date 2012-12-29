@@ -10,9 +10,9 @@
     this.animationObj = {};
 
     this.animationFrame = {};
-    this.images = [];
-    this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
+    this.images = [];  
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
+    this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "ground", url: "/animation/pi/ground.png" });
     var mouseDown = false;
     var htSize = {
@@ -118,8 +118,12 @@
             obj.animationObj[obj.animationObjId].set("angle", obj.animationFrame[playFrame][node].v);
         }
     }
-    this.animationObj["sky"] = new collie.MovableObject({ backgroundImage: "sky" });
-    this.animationObj["sky"].addTo(oLayer);
+
+    this.setImage = function (title) {
+        this.animationObj[title] = new collie.MovableObject({ backgroundImage: title });
+        this.animationObj[title].addTo(oLayer);
+    }
+    
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
