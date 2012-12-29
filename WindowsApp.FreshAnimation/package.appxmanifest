@@ -15,8 +15,8 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="animation.html">
-      <VisualElements DisplayName="WindowsApp.FreshAnimation" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="WindowsApp.FreshAnimation" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
+      <VisualElements DisplayName="FreshAnimation" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="a" ForegroundText="light" BackgroundColor="#F08A21">
+        <DefaultTile ShowName="noLogos" WideLogo="images\wlogo.png" />
         <SplashScreen Image="images\splashscreen.png" />
         <InitialRotationPreference>
           <Rotation Preference="landscape" />

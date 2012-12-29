@@ -61,9 +61,11 @@
     <Content Include="css\default.css" />
     <Content Include="html\menu.html" />
     <Content Include="images\logo.png" />
+    <Content Include="images\smalllog.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
+    <Content Include="images\wlogo.png" />
     <Content Include="js\animation.js" />
     <Content Include="js\Box2dWeb-2.1.a.3.min.js" />
     <Content Include="js\collie.Box2d.min.js" />
