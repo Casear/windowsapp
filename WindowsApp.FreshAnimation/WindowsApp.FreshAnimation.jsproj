@@ -74,12 +74,16 @@
     <Content Include="js\collie.tool.min.js" />
     <Content Include="js\default.js" />
     <Content Include="js\hammer.js" />
+    <Content Include="js\imageGenerator.js" />
     <Content Include="js\jquery-1.8.3.min.js" />
     <Content Include="js\jquery.hammer.js" />
     <Content Include="js\jquery.knob.js" />
     <Content Include="js\menu.js" />
     <Content Include="js\navigator.js" />
-    <Content Include="pages\home\home.css" />
+<Content Include="js\script.js" />
+    <Content Include="js\slideshow.js" />
+    <Content Include="page.html" />
+<Content Include="pages\home\home.css" />
     <Content Include="pages\home\home.html" />
     <Content Include="pages\home\home.js" />
     <Content Include="default.html" />
