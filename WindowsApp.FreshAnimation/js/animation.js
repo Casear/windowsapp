@@ -1,5 +1,5 @@
 
-﻿function AnimationObjectManager(_canvasId, _projectId, callback) {
+function AnimationObjectManager(_canvasId, _projectId, callback) {
     var projectId = _projectId;
     var canvasId = _canvasId;
     var animationName = null;
@@ -9,15 +9,15 @@
     this.Frame = 0;
     this.animationObjId = null;
     this.animationObj = {};
-    
+    var timePlay = true;
     this.animationFrame = {};
-    this.images = [];  
+    this.images = [];
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
     this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "ground", url: "/animation/pi/ground.png" });
     var _folder = Windows.Storage.ApplicationData.current.localFolder;
     _folder.createFolderAsync("projects\\" + projectId + "\\slide", Windows.Storage.CreationCollisionOption.openIfExists);
-
+    var time = $('.film').offset({ left: 1300 });
     var mouseDown = false;
     var htSize = {
         width: document.body.clientWidth,
@@ -30,6 +30,8 @@
 
     var htStartPosition = null;
     var htSelectedDisplayObjectPosition = null;
+    var htTimeStartPosition = null;
+    var htTimeSelectedDisplayObjectPosition = null;
     var count = 0;
 
 
@@ -41,7 +43,6 @@
     var playindex = 0;
 
     this.play = function () {
-        playFrame = 0;
         startPlay = true;
 
     }
@@ -61,8 +62,9 @@
         $('#fps').text(Math.floor(fps));
     }
     function checkAnimation() {
-        if (startRec) {
-
+        if (startRec && timePlay) {
+            var position = time.position();
+            time.offset({ left: position.left - 2 });
             if (obj.animationObjId) {
                 if (!obj.animationFrame[obj.Frame])
                     obj.animationFrame[obj.Frame] = {};
@@ -70,16 +72,16 @@
                 if (mouseDown && htSelectedDisplayObjectPosition) {
                     x = obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x;
                     y = obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y;
-                    console.dir("rec");
+                   
                 } else {
                     x = obj.animationObj[obj.animationObjId].get("x");
                     y = obj.animationObj[obj.animationObjId].get("y");
                 }
                 v = obj.animationObj[obj.animationObjId].get("angle");
                 //if (obj.animationFrame[obj.Frame][obj.animationObjId]) {
-                    obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: x, y: y, v: v };
+                obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: x, y: y, v: v };
                 //}
-                
+
             }
             if (obj.Frame % 40 == 0) {
                 var image = oLayer.getElement().toDataURL();
@@ -89,22 +91,20 @@
                     frame: obj.Frame, content: image.replace(/^data:image\/(png|jpg);base64,/, ""), projectId: projectId
                 });
             }
+            
+        }
+        if ( timePlay) {
+            
+            if (this.animationFrame[obj.Frame]) {
+                for (var node in obj.animationFrame[obj.Frame]) {
+                    obj.animationObj[node].move(obj.animationFrame[obj.Frame][node].x, obj.animationFrame[obj.Frame][node].y);
+                    obj.animationObj[node].set("angle", obj.animationFrame[obj.Frame][node].v);
+                    
+                    };
+            }
             obj.Frame++;
         }
-        if (startPlay || startRec) {
-            if (playFrame <= obj.Frame) {
-                if (this.animationFrame[playFrame]) {
-                    for (var node in obj.animationFrame[playFrame]) {
-                        obj.animationObj[node].move(obj.animationFrame[playFrame][node].x, obj.animationFrame[playFrame][node].y);
-                        obj.animationObj[node].set("angle", obj.animationFrame[playFrame][node].v);
-                        console.log(node, obj.animationFrame[playFrame][node].x, obj.animationFrame[playFrame][node].y);
-                    };
-                }
-                playFrame++;
-            }
-
-        }
-
+        
         requestAnimFrame();
         window.requestAnimationFrame(checkAnimation);
     }
@@ -138,11 +138,58 @@
             this.animationObj[title].addTo(oLayer);
         }
     }
-    
+
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
-    
+    time.hammer({
+        swipe_time:2000
+    }).bind("hold", function (ev) {
+        timePlay = false;
+        console.log("touch");
+    }).bind("swipe", function (ev) {
+
+        var off = time.offset();
+        if (ev.angle > 90) {
+            time.animate({
+                left: '-=600'
+            },
+            1000
+            );
+        } else {
+            time.animate({
+                left: '+=600'
+            },
+        1000
+        );
+
+        }
+
+    }).bind("drag", function (ev) {
+       
+        if (!htTimeStartPosition) {
+            htTimeStartPosition = { x: ev.position.x, y: ev.position.y };
+            htTimeSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+        } else {
+            htTimeStartPosition = htTimeSelectedDisplayObjectPosition;
+            htTimeSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+
+            if (htTimeSelectedDisplayObjectPosition) {
+                var off = time.offset();
+                var percent = obj.Frame / (1300 - off.left);
+                obj.Frame -= Math.floor((htTimeSelectedDisplayObjectPosition.x - htTimeStartPosition.x));
+                time.offset({ left: off.left + htTimeSelectedDisplayObjectPosition.x - htTimeStartPosition.x });
+            }
+
+        }
+    })
+
+        .bind("release", function (ev) {
+            timePlay = true;
+            htTimeStartPosition = null;
+            htTimeSelectedDisplayObjectPosition = null;
+        });
+
     $(oLayer.getElement()).hammer({
 
     }).bind("drag", function (ev) {
