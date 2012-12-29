@@ -1,11 +1,13 @@
 ﻿function AnimationObjectManager(_canvasId, _projectId, callback) {
     var projectId = _projectId;
     var canvasId = _canvasId;
-    var animationName;
+    var animationName = null;
     var startRec = false;
     var startPlay = false;
+    var animationO;
     this.Frame = 0;
-    this.animationObj = [];
+    this.animationObj = {};
+
     this.animationFrame = [];
     this.images = [];
     this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
@@ -46,10 +48,7 @@
     var obj = this;
     var playFrame = 0;
     var playindex = 0;
-    function playdemo() {
-
-
-    }
+   
     this.play = function () {
         playFrame = 0;
         startPlay = true;
@@ -68,16 +67,16 @@
         delta = (new Date().getTime() - lastCalledTime) / 1000;
         lastCalledTime = new Date().getTime();
         fps = 1 / delta;
-        $('#fps').text( Math.floor( fps));
+        $('#fps').text(Math.floor(fps));
     }
     function checkAnimation() {
         if (startRec) {
             console.log("start rec");
-            if (mouseDown) {
+            if (animationO && mouseDown) {
                 if (htSelectedDisplayObjectPosition) {
-                    this.animationFrame.push({ obj: "", frame: obj.Frame, x: htSelectedDisplayObjectPosition.x, y: htSelectedDisplayObjectPosition.y });
+                    this.animationFrame.push({ obj: animationO, frame: obj.Frame, x: htSelectedDisplayObjectPosition.x, y: htSelectedDisplayObjectPosition.y });
                 } else {
-                    this.animationFrame.push({ obj: "", frame: obj.Frame, x: oSelectedDisplayObject.x, y: oSelectedDisplayObject.y });
+                    this.animationFrame.push({ obj: animationO, frame: obj.Frame, x: oSelectedDisplayObject.x, y: oSelectedDisplayObject.y });
                 }
             }
             obj.Frame++;
@@ -85,7 +84,7 @@
         if (startPlay && playFrame <= obj.Frame) {
             console.log("start play");
             while (obj.animationFrame.length > (playindex + 1) && this.animationFrame[playindex].frame <= playFrame) {
-               
+
             }
             playFrame++;
         }
@@ -97,6 +96,13 @@
     }
     this.stopRec = function () {
         startRec = false;
+    }
+    this.setAnimation = function (id) {
+
+        if (this.animationObj[id]) {
+            animationO = this.animationObj[id];
+        }
+
     }
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
