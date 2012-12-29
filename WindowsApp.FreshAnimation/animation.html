@@ -19,11 +19,21 @@
 
     <script>
         $(function () {
-            $(function () {
-                AnimationObjectManager("container", "pi",  function () {
-                    var md = new Windows.UI.Popups.MessageDialog('Ready for Monday?');
-                    md.showAsync();
-                });
+
+            var animination = AnimationObjectManager("container", "pi", function () {
+                var md = new Windows.UI.Popups.MessageDialog('Ready for Monday?');
+                md.showAsync();
+            });
+            $('#rec').click(function () {
+                animination.rec();
+            });
+
+            $('#stop').click(function () {
+                animination.stopRec();
+            });
+
+            $('#play').click(function () {
+                animination.play();
             });
 
 
@@ -32,14 +42,14 @@
 </head>
 <body>
 
-    <div class="win-ui-light appGrid">
+    <div class="win-ui-dark appGrid">
         <div id="container" class="canvas">
         </div>
         <div class="timeline">
-            <input type="button" value="move" id="move" />
-            <input type="button" value="sea" id="sea" />
-            <input type="button" value="ground" id="ground" />
-            <input type="button" value="sky" id="sky" />
+            <input type="button" value="Rec" id="rec" />
+            <input type="button" value="Stop" id="stop" />
+            <input type="button" value="Play" id="play" />
+
         </div>
         <div id="menu" class="menu" role="contentinfo" data-win-control="WinJS.UI.HtmlControl" data-win-options="{uri: '/html/menu.html'}"></div>
 
