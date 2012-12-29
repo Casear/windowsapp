@@ -15,28 +15,8 @@
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
     this.images.push({ title: "ground", url: "/animation/pi/ground.png" });
     var _folder = Windows.Storage.ApplicationData.current.localFolder;
-    //appdata.current.localFolder.createFolderAsync("Microsoft\\Windows Store\\ApiData", storage.CreationCollisionOption.openIfExists)
-    //    .then(function (folder) {
-    //        appmodel.Package.current.installedLocation.getFileAsync("data\\license.xml")
-    //            .then(function (file) {
-    //                folder.createFileAsync("WindowsStoreProxy.xml", storage.CreationCollisionOption.replaceExisting)
-    //                    .then(function (newFile) { file.copyAndReplaceAsync(newFile); });
-    //            });
-    //    });
-    //_folder.getFolderAsync(_projectId).then(function (project) {
-    //    project.getFolderAsync("slide").then(function (slide) {
-    //    }).cancel(function () {
-    //        project.createFolderAsync("slide");
-    //    });
-    //}).cancel(function () {
-    //    _folder.createFolderAsync("_projectId").then(function (project) {
-    //        project.getFolderAsync("slide").then(function (slide) {
-    //        }).cancel(function () {
-    //            project.createFolderAsync("slide");
-    //        });
+    _folder.createFolderAsync("projects\\" + projectId + "\\slide", Windows.Storage.CreationCollisionOption.openIfExists);
 
-    //    });
-    //});
     var mouseDown = false;
     var htSize = {
         width: document.body.clientWidth,
@@ -100,8 +80,12 @@
 
             }
             if (obj.Frame % 40 == 0) {
-
                 var image = oLayer.getElement().toDataURL();
+               
+                var worker = new Worker("/js/imageGenerator.js");
+                worker.postMessage({
+                    frame: obj.Frame, content: image.replace(/^data:image\/(png|jpg);base64,/, ""), projectId: projectId
+                });
             }
             obj.Frame++;
         }
