@@ -38,6 +38,33 @@
     margin: 1rem;
 }
 
+.timelineGrid {
+    display: -ms-grid;
+    -ms-grid-columns: 95px 9fr 95px;
+    -ms-grid-rows: 1fr;
+}
+
+.timelineIcon img{
+   width:65px;
+   height:65px;
+}
+
+#timelineRecord {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+}
+
+#timelineBar {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+
+}
+
+#timelinePlay {
+    -ms-grid-column: 3;
+    -ms-grid-row: 1;
+}
+
 @media screen and (-ms-view-state: fullscreen-landscape) {
 }
 

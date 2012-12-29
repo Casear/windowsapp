@@ -26,7 +26,7 @@
                
             });
             $('#rec').click(function () {
-                animination.rec();
+                
             });
 
             $('#stop').click(function () {
@@ -37,15 +37,27 @@
                 animination.play();
             });
 
-            $('#sky').hammer({
-               
-            }).bind("hold", function (ev) {
-                console.log("hold1");
-                animination.setAnimation("sky");
-            }).bind("release", function (ev) {
-                animination.setAnimation(null);
-            });
+            $('#timelineRecord').toggle(
+                  function (evt) {
+                      //animination.rec();
+                      $('img', this).attr('src', 'images/record_n.png');
+                  },
+                  function () {
+                      //animination.stopRec();
+                      $('img', this).attr('src', 'images/record_p.png');
+                  }
+            );
 
+            $('#timelinePlay').toggle(
+                  function (evt) {
+                      //animination.rec();
+                      $('img', this).attr('src', 'images/play_n.png');
+                  },
+                  function () {
+                      //animination.stopRec();
+                      $('img', this).attr('src', 'images/play_p.png');
+                  }
+            );
 
         });
     </script>
@@ -55,15 +67,27 @@
     <div class="win-ui-dark appGrid">
         <div id="container" class="canvas">
         </div>
-        <div class="timeline">
-           
-           <input type="button" value="Rec" id="rec" />
-            <input type="button" value="Stop" id="stop" />
-            <input type="button" value="Play" id="play" />
-            <input type="button" value="sky" id="sky" />
-           
-            <input type="button" value="sea" id="sea" />
-             <label id="fps" >0</label>
+        <div class="timeline timelineGrid">
+            <div id="timelineRecord" class="timelineIcon">
+                <img src="images/record_p.png"  class="timelineIcon" />
+            </div>
+            <div id="timelineBar">
+
+
+                <input type="button" value="Rec" id="rec" />
+                <input type="button" value="Stop" id="stop" />
+
+                <input type="button" value="Play" id="play" />
+
+                <label id="fps">0</label>
+            </div>
+            <div id="timelinePlay" class="timelineIcon">
+                <img src="images/play_p.png" data-action="play" class="timelineIcon" />
+            </div>
+                
+            
+
+
         </div>
         <div id="menu" class="menu" role="contentinfo" data-win-control="WinJS.UI.HtmlControl" data-win-options="{uri: '/html/menu.html'}"></div>
 

@@ -67,6 +67,10 @@
     <Content Include="images\storelogo.png" />
     <Content Include="images\wlogo.png" />
     <Content Include="images\background.png" />
+    <Content Include="images\play_p.png" />
+    <Content Include="images\play_n.png" />
+    <Content Include="images\record_n.png" />
+    <Content Include="images\record_p.png" />
     <Content Include="js\animation.js" />
     <Content Include="js\Box2dWeb-2.1.a.3.min.js" />
     <Content Include="js\collie.Box2d.min.js" />

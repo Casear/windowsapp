@@ -1,3 +1,4 @@
+
 ﻿function AnimationObjectManager(_canvasId, _projectId, callback) {
     var projectId = _projectId;
     var canvasId = _canvasId;
@@ -131,8 +132,10 @@
     }
 
     this.setImage = function (title) {
-        this.animationObj[title] = new collie.MovableObject({ backgroundImage: title });
-        this.animationObj[title].addTo(oLayer);
+        if (!this.animationObj[title]) {
+            this.animationObj[title] = new collie.MovableObject({ backgroundImage: title });
+            this.animationObj[title].addTo(oLayer);
+        }
     }
     
     collie.Renderer.addLayer(oLayer);
@@ -168,4 +171,5 @@
     }
     checkAnimation();
     return this;
+
 }
