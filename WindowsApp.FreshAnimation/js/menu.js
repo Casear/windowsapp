@@ -35,11 +35,11 @@
     var page = WinJS.UI.Pages.define("/html/menu.html", {
         ready: function (element, options) {
             var listView = element.querySelector('#lvLayers').winControl;
-            var lvTools = element.querySelector("#lvProperties").winControl;
+            //var lvTools = element.querySelector("#lvProperties").winControl;
 
             // Notify the ListView to calculate its layout 
             listView.forceLayout();
-            lvTools.forceLayout();
+            //lvTools.forceLayout();
 
             function itemInvokedHandler(eventObject) {
                 eventObject.detail.itemPromise.done(function (invokedItem) {
@@ -51,13 +51,41 @@
                 });
             }
 
-
+        
+            
+            
             
 
             listView.addEventListener("iteminvoked", itemInvokedHandler, false);
+            //lvTools.addEventListener("MSPointerDown", toolsInvokedHandler, false);
+            onload();
         }
     });
 
+    function onload() {
+        //var clr = document.getElementById('btnPosition');
+        //clr.addEventListener('MSPointerDown', function (evt) {
 
+        //    var x = evt.currentPoint.rawPosition.x,
+        //           y = evt.currentPoint.rawPosition.y;
+        //    $('#posRange').css({ left: evt.x, top: evt.y }).show();
+        //});
+        $(".dial").knob();
+
+        $('#cPosition').on('MSPointerDown', '#btnPosition', function (evt) {
+            $('#posRange')
+                //.css({ left: evt.x, top: evt.y })
+                .show();
+        })
+        .on('MSPointerMove', 'posRange', function (evt) {
+            console.log(evt);
+        });
+        
+
+        $('#posRange').on('MSPointerDown', function (evt) {
+           // $(this).hide();
+        })
+        .on('');
+    }
 
 })();

@@ -23,8 +23,7 @@
         $(function () {
 
             var animination = AnimationObjectManager("container", "pi", function () {
-                var md = new Windows.UI.Popups.MessageDialog('Ready for Monday?');
-                md.showAsync();
+               
             });
             $('#rec').click(function () {
                 animination.rec();
@@ -41,7 +40,8 @@
             $('#sky').hammer({
                
             }).bind("hold", function (ev) {
-                console.log("hold");
+                console.log("hold1");
+                animination.setAnimation("sky");
             }).bind("release", function (ev) {
                 console.log("release");
             });
@@ -57,10 +57,11 @@
         </div>
         <div class="timeline">
            
-            <input type="button" value="Rec" id="rec" />
+           <input type="button" value="Rec" id="rec" />
             <input type="button" value="Stop" id="stop" />
             <input type="button" value="Play" id="play" />
             <input type="button" value="sky" id="sky" />
+           
             <input type="button" value="sea" id="sea" />
              <label id="fps" >0</label>
         </div>

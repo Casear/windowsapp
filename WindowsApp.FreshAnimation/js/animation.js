@@ -6,9 +6,10 @@
     var startPlay = false;
     var animationO;
     this.Frame = 0;
+    this.animationObjId = null;
     this.animationObj = {};
 
-    this.animationFrame = [];
+    this.animationFrame = {};
     this.images = [];
     this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
@@ -22,25 +23,11 @@
         width: htSize.width,
         height: htSize.height
     });
-    var oSelectedDisplayObject = null;
-    var htStartPosition;
-    var htSelectedDisplayObjectPosition;
+
+    var htStartPosition = null;
+    var htSelectedDisplayObjectPosition = null;
     var count = 0;
-    oLayer.attach({
-        mousedown: function (oEvent) {
-            mouseDown = true;
-            htStartPosition = { x: oEvent.x, y: oEvent.y };
-        }
-    ,
-        mouseup: function (oEvent) {
 
-            mouseDown = false;
-        },
-        mousemove: function (oEvent) {
-            htSelectedDisplayObjectPosition = { x: oEvent.x, y: oEvent.y };
-
-        }
-    });
 
     this.images.forEach(function (file) {
         collie.ImageManager.addImage(file.title, file.url);
@@ -48,7 +35,7 @@
     var obj = this;
     var playFrame = 0;
     var playindex = 0;
-   
+
     this.play = function () {
         playFrame = 0;
         startPlay = true;
@@ -71,23 +58,28 @@
     }
     function checkAnimation() {
         if (startRec) {
-            console.log("start rec");
-            if (animationO && mouseDown) {
+          
+            if (obj.animationObjId && mouseDown) {
                 if (htSelectedDisplayObjectPosition) {
-                    this.animationFrame.push({ obj: animationO, frame: obj.Frame, x: htSelectedDisplayObjectPosition.x, y: htSelectedDisplayObjectPosition.y });
-                } else {
-                    this.animationFrame.push({ obj: animationO, frame: obj.Frame, x: oSelectedDisplayObject.x, y: oSelectedDisplayObject.y });
+                    obj.animationFrame[obj.Frame] = {};
+                    obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, y: obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y };
+                    
                 }
             }
             obj.Frame++;
         }
-        if (startPlay && playFrame <= obj.Frame) {
-            console.log("start play");
-            while (obj.animationFrame.length > (playindex + 1) && this.animationFrame[playindex].frame <= playFrame) {
-
+        if (startPlay || startRec) {
+            while (playFrame <= obj.Frame) {
+                if (this.animationFrame[playFrame]) {
+                    for(var node in obj.animationFrame[playFrame]){
+                        obj.animationObj[node].move(obj.animationFrame[playFrame][node].x, obj.animationFrame[playFrame][node].y);
+                    };
+                }
+                playFrame++;
             }
-            playFrame++;
+            
         }
+
         requestAnimFrame();
         window.requestAnimationFrame(checkAnimation);
     }
@@ -99,14 +91,46 @@
     }
     this.setAnimation = function (id) {
 
-        if (this.animationObj[id]) {
-            animationO = this.animationObj[id];
+        if (obj.animationObj[id]) {
+            obj.animationObjId = id;
+        } else {
+
+
         }
 
     }
+    this.animationObj["sky"] = new collie.MovableObject({ backgroundImage: "sky" });
+    this.animationObj["sky"].addTo(oLayer);
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
+
+    $(oLayer.getElement()).hammer({
+
+    }).bind("drag", function (ev) {
+        console.log(ev.position.x, ev.position.y);
+        mouseDown = true;
+        if (!htStartPosition) {
+            htStartPosition = { x: ev.position.x, y: ev.position.y };
+            htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+        } else {
+            htStartPosition = htSelectedDisplayObjectPosition;
+            htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+            if (obj.animationObjId) {
+                if (htSelectedDisplayObjectPosition) {
+                    obj.animationObj[obj.animationObjId].move(obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y)
+                    console.log("Move ", obj.animationObj[obj.animationObjId].get("x") + htStartPosition.x - htSelectedDisplayObjectPosition.x, obj.animationObj[obj.animationObjId].get("y") + htStartPosition.y - htSelectedDisplayObjectPosition.y);
+
+                }
+
+            }
+        }
+    }).bind("release", function (ev) {
+        mouseDown = false;
+        obj.animationObjId = null;
+        htStartPosition = null;
+        htSelectedDisplayObjectPosition = null;
+    });
     if (callback != null) {
         callback();
     }
