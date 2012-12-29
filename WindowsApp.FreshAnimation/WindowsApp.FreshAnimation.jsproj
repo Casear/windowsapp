@@ -61,6 +61,7 @@
     <Content Include="css\default.css" />
     <Content Include="html\menu.html" />
     <Content Include="images\logo.png" />
+    <Content Include="images\smallBackground.png" />
     <Content Include="images\smalllog.png" />
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />

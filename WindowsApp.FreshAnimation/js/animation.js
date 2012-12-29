@@ -69,16 +69,17 @@
                 var x = 0, y = 0, v = 0;
                 if (mouseDown && htSelectedDisplayObjectPosition) {
                     x = obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x;
-                    x = obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y;
+                    y = obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y;
+                    console.dir("rec");
                 } else {
                     x = obj.animationObj[obj.animationObjId].get("x");
                     y = obj.animationObj[obj.animationObjId].get("y");
                 }
                 v = obj.animationObj[obj.animationObjId].get("angle");
-                if (obj.animationFrame[obj.Frame][obj.animationObjId]) {
+                //if (obj.animationFrame[obj.Frame][obj.animationObjId]) {
                     obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: x, y: y, v: v };
-                }
-
+                //}
+                
             }
             if (obj.Frame % 40 == 0) {
                 var image = oLayer.getElement().toDataURL();
@@ -141,7 +142,7 @@
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
-
+    
     $(oLayer.getElement()).hammer({
 
     }).bind("drag", function (ev) {

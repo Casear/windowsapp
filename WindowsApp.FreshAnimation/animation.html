@@ -23,9 +23,9 @@
         $(function () {
 
             window.animination = AnimationObjectManager("container", "pi", function () {
-               
+
             });
-           
+
 
             $('#timelineRecord').toggle(
                   function (evt) {
@@ -49,6 +49,31 @@
                   }
             );
 
+            var ti = [];
+            var sm = $("<img />");
+            sm.attr("src", '/images/smallbackground.png').attr('width', 320)
+            var txt = $('.film').offset({ left: 1200 });
+            txt.append(sm);
+
+            var count=320;
+            ti.push(sm);
+            function slider() {
+                var d = -1;
+
+                count--;
+                var position = txt.position();
+                txt.offset({ left: position.left - 1 });
+                if (count == 0) {
+                    var tmp = $("<img />");
+                    tmp.attr("src", '/images/smallbackground.png').attr('width', 320)
+
+                    txt.append(tmp);
+                    count = 320;
+                }
+                window.requestAnimationFrame(slider);
+            }
+            slider();
+
         });
     </script>
 </head>
@@ -59,17 +84,16 @@
         </div>
         <div class="timeline timelineGrid">
             <div id="timelineRecord" class="timelineIcon">
-                <img src="images/record_p.png"  class="timelineIcon" />
+                <img src="images/record_p.png" class="timelineIcon" />
             </div>
-            <div id="timelineBar">
-
-                <label id="fps">0</label>
+            <div id="timelineBar" style="overflow: hidden">
+                <div class="film"></div>
             </div>
             <div id="timelinePlay" class="timelineIcon">
                 <img src="images/play_p.png" data-action="play" class="timelineIcon" />
             </div>
-                
-            
+
+
 
 
         </div>
