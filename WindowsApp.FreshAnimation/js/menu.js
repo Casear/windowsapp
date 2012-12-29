@@ -35,7 +35,7 @@
     var page = WinJS.UI.Pages.define("/html/menu.html", {
         ready: function (element, options) {
             var listView = element.querySelector('#lvLayers').winControl;
-            var lvTools = element.querySelector("#lvTools").wincontrol;
+            var lvTools = element.querySelector("#lvProperties").winControl;
 
             // Notify the ListView to calculate its layout 
             listView.forceLayout();
