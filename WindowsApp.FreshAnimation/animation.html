@@ -15,95 +15,24 @@
     <!-- TestApp references -->
     <link href="/css/animation.css" rel="stylesheet" />
     <script src="/js/default.js"></script>
+    <script src="/js/animation.js"></script>
+
     <script>
         $(function () {
-            collie.Renderer.DEBUG_RENDERING_MODE = "canvas";
+            $(function () {
+                AnimationObjectManager("container", "pi",  function () {
+                    var md = new Windows.UI.Popups.MessageDialog('Ready for Monday?');
+                    md.showAsync().then(function (c) {
 
-            var htSize = {
-                width: document.body.clientWidth,
-                height: document.body.clientHeight
-            };
-            oLayer = new collie.Layer({
-                width: htSize.width,
-                height: htSize.height
-            });
-            oConsole = new collie.FPSConsole({
-                color: "black"
-            });
-            collie.ImageManager.add({
-                "sea": "/animation/pi/sea.png",
-                "ground": "/animation/pi/ground.png",
-                "sky": "/animation/pi/sky.png",
-            }, function () {
+                      
 
-               
-
-                var sky = new collie.MovableObject({
-                  
-                    backgroundImage: "sky"
-                });
-                var ground = new collie.MovableObject({
-                    backgroundImage: "ground",
-                    y:430
-                });
-                var sea = new collie.MovableObject({
-                    backgroundImage: "sea",
-                    y:250
-                });
-
-                sky.addTo(oLayer);
-                sea.addTo(oLayer);
-                ground.addTo(oLayer);
-                    
-                oConsole.load();
+                    });
 
 
-                collie.Renderer.addLayer(oLayer);
-                collie.Renderer.load(document.getElementById("container"));
-                collie.Renderer.start();
 
-                function move() {
-                    var x=sky.get("x");
-                    if ( x> -200) {
-                        sky.set("x", x - 1);
-                    }
-                    var x = sea.get("x");
-                    if (x > -200) {
-                        sea.set("x", x - 1);
-                    }
-                    var x = ground.get("x");
-                    if (x > -200) {
-                        ground.set("x", x - 1);
-                    }
-                    window.requestAnimationFrame(move);
-                }
 
-                $("#move").click(function () {
-                    var htSize = sky.getImageSize();
-                    console.dir(htSize);
-                    console.dir(sky);
-                    move();
-                });
-                $("#sea").click(function () {
-                    var htSize = sky.getImageSize();
-                    console.dir(htSize);
-                    console.dir(sky);
-                    move();
-                });
-                $("#ground").click(function () {
-                    var htSize = sky.getImageSize();
-                    console.dir(htSize);
-                    console.dir(sky);
-                    move();
-                });
-                $("#sky").click(function () {
-                    var htSize = sky.getImageSize();
-                    console.dir(htSize);
-                    console.dir(sky);
-                    move();
                 });
             });
-
 
 
         });
@@ -117,8 +46,8 @@
         <div class="timeline">
             <input type="button" value="move" id="move" />
             <input type="button" value="sea" id="sea" />
-             <input type="button" value="ground" id="ground" />
-             <input type="button" value="sky" id="sky" />
+            <input type="button" value="ground" id="ground" />
+            <input type="button" value="sky" id="sky" />
         </div>
         <div id="menu" class="menu" role="contentinfo" data-win-control="WinJS.UI.HtmlControl" data-win-options="{uri: '/html/menu.html'}"></div>
 
