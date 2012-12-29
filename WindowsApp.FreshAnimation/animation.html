@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>TestApp</title>
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Animation</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1 ">
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
     <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
     <script src="/js/jquery-1.8.3.min.js"></script>
@@ -28,7 +28,7 @@
                 height: htSize.height
             });
             oConsole = new collie.FPSConsole({
-                color: "#425510"
+                color: "black"
             });
             collie.ImageManager.add({
                 "sea": "/animation/pi/sea.png",
@@ -36,21 +36,25 @@
                 "sky": "/animation/pi/sky.png",
             }, function () {
 
-                var sky = new collie.DisplayObject({
-                    width: 1920,
-                    height: 1080,
-                    x: 0,
-                    y: 0,
+               
+
+                var sky = new collie.MovableObject({
+                  
                     backgroundImage: "sky"
                 });
-                var ground = new collie.DisplayObject({
-                    backgroundImage: "ground"
+                var ground = new collie.MovableObject({
+                    backgroundImage: "ground",
+                    y:430
                 });
-                var sea = new collie.DisplayObject({
-                    backgroundImage: "sea"
+                var sea = new collie.MovableObject({
+                    backgroundImage: "sea",
+                    y:250
                 });
 
                 sky.addTo(oLayer);
+                sea.addTo(oLayer);
+                ground.addTo(oLayer);
+                    
                 oConsole.load();
 
 
@@ -58,12 +62,46 @@
                 collie.Renderer.load(document.getElementById("container"));
                 collie.Renderer.start();
 
-                $("#size").click(function () {
+                function move() {
+                    var x=sky.get("x");
+                    if ( x> -200) {
+                        sky.set("x", x - 1);
+                    }
+                    var x = sea.get("x");
+                    if (x > -200) {
+                        sea.set("x", x - 1);
+                    }
+                    var x = ground.get("x");
+                    if (x > -200) {
+                        ground.set("x", x - 1);
+                    }
+                    window.requestAnimationFrame(move);
+                }
+
+                $("#move").click(function () {
                     var htSize = sky.getImageSize();
-                    sky.set({ scaleX: 0.1 });
+                    console.dir(htSize);
+                    console.dir(sky);
+                    move();
                 });
-
-
+                $("#sea").click(function () {
+                    var htSize = sky.getImageSize();
+                    console.dir(htSize);
+                    console.dir(sky);
+                    move();
+                });
+                $("#ground").click(function () {
+                    var htSize = sky.getImageSize();
+                    console.dir(htSize);
+                    console.dir(sky);
+                    move();
+                });
+                $("#sky").click(function () {
+                    var htSize = sky.getImageSize();
+                    console.dir(htSize);
+                    console.dir(sky);
+                    move();
+                });
             });
 
 
@@ -73,14 +111,17 @@
 </head>
 <body>
 
-    <div class="win-ui-dark appGrid">
+    <div class="win-ui-light appGrid">
         <div id="container" class="canvas">
         </div>
         <div class="timeline">
-            <input type="button" value="setSize" id="size" />
+            <input type="button" value="move" id="move" />
+            <input type="button" value="sea" id="sea" />
+             <input type="button" value="ground" id="ground" />
+             <input type="button" value="sky" id="sky" />
         </div>
         <div id="menu" class="menu" role="contentinfo" data-win-control="WinJS.UI.HtmlControl" data-win-options="{uri: '/html/menu.html'}"></div>
-        
+
     </div>
 </body>
 </html>
