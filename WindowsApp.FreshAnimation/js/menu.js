@@ -104,10 +104,30 @@
 
 
             $('#tPosition').on('MSPointerDown', '#btnPosition', function (evt) {
-
+                
                 if (counter++ % 2) {
+                    var ctr = $('<input type="range" />')
+                        .val(100)
+                        .data('oldValue', 100)
+                    .on('change', function (ev) {
+                        var anx = window.animination;
+                        var imgs = anx.animationObj;
+                        var $this = $(this);
+                        var dir = ($(this).val() - $this.data('oldValue')) < 0 ? 1 : -1;
+                        
+                        $this.data('oldValue', $this.val());
+
+                        for (var img in imgs) {
+                            
+                            var x = imgs[img].get('x') - dir * 50;
+
+                            imgs[img].set('x', x);
+
+                        }
+                    });
+
                     $(this).after(getToolsByMoving(
-                        $('<input type="range" />'),
+                        ctr,
                         { x: evt.originalEvent.x, y: evt.originalEvent.y }));
                 }
                 else {
@@ -130,9 +150,20 @@
                     .attr('data-width', 150)
                     .attr('data-cursor', true)
                     .attr('data-thickness', ".3")
-                    .attr('data-displayinput', false)
-                    .val(75)
-                    .knob();
+                    .attr('data-fgColor', "#C0ffff")
+                    .attr('data-bgColor', "#999999")
+                    .attr('data-angleOffset', 180)
+                    
+                    //.attr('data-displayinput', true)
+                    .knob({
+                        "min": 0,
+                        "max": 360,
+                        'change': function (v) {
+                            var anx = window.animination;
+                            anx.setAngle(v);
+                           
+                        }
+                    });
 
                     $(this).after(getToolsByMoving(
                         circle,

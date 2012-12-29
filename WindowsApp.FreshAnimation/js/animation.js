@@ -128,7 +128,8 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     }
     this.setAngle = function (angle) {
         if (obj.animationObjId) {
-            obj.animationObj[obj.animationObjId].set("angle", obj.animationFrame[playFrame][node].v);
+          
+            obj.animationObj[obj.animationObjId].set("angle", angle);
         }
     }
 
