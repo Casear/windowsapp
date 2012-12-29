@@ -3,9 +3,10 @@
     var canvasId = _canvasId;
     var animationName;
     var startRec = false;
+    var startPlay = false;
     this.Frame = 0;
-
-    this.animationObject = [];
+    this.animationObj = [];
+    this.animationFrame = [];
     this.images = [];
     this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
@@ -42,66 +43,67 @@
     this.images.forEach(function (file) {
         collie.ImageManager.addImage(file.title, file.url);
     });
-    new collie.MovableObject({ backgroundImage: this.images[0].title }).addTo(oLayer);
+    var obj = this;
+    var playFrame = 0;
+    var playindex = 0;
+    function playdemo() {
 
 
+    }
+    this.play = function () {
+        playFrame = 0;
+        startPlay = true;
+
+    }
+    var lastCalledTime;
+    var fps;
+
+    function requestAnimFrame() {
+
+        if (!lastCalledTime) {
+            lastCalledTime = new Date().getTime();
+            fps = 0;
+            return;
+        }
+        delta = (new Date().getTime() - lastCalledTime) / 1000;
+        lastCalledTime = new Date().getTime();
+        fps = 1 / delta;
+        $('#fps').text( Math.floor( fps));
+    }
+    function checkAnimation() {
+        if (startRec) {
+            console.log("start rec");
+            if (mouseDown) {
+                if (htSelectedDisplayObjectPosition) {
+                    this.animationFrame.push({ obj: "", frame: obj.Frame, x: htSelectedDisplayObjectPosition.x, y: htSelectedDisplayObjectPosition.y });
+                } else {
+                    this.animationFrame.push({ obj: "", frame: obj.Frame, x: oSelectedDisplayObject.x, y: oSelectedDisplayObject.y });
+                }
+            }
+            obj.Frame++;
+        }
+        if (startPlay && playFrame <= obj.Frame) {
+            console.log("start play");
+            while (obj.animationFrame.length > (playindex + 1) && this.animationFrame[playindex].frame <= playFrame) {
+               
+            }
+            playFrame++;
+        }
+        requestAnimFrame();
+        window.requestAnimationFrame(checkAnimation);
+    }
+    this.rec = function () {
+        startRec = true;
+    }
+    this.stopRec = function () {
+        startRec = false;
+    }
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
     if (callback != null) {
         callback();
     }
-    var playFrame = 0;
-    var playindex = 0;
-    function playdemo() {
-
-        if (this.animationObject.length > (playindex+1)) {
-            while (this.animationObject[playindex].frame <= playFrame) {
-
-                new collie.Circle({
-                    radius: 10,
-                    fillColor: "red",
-                    x: this.animationObject[playindex].x,
-                    y: this.animationObject[playindex].y,
-                }).addTo(oLayer);
-                playindex++;
-            }
-        }
-        playFrame++;
-        if (playFrame <= obj.Frame)
-            window.requestAnimationFrame(playdemo);
-    }
-    this.play = function () {
-        playFrame = 0;
-        playdemo();
-
-
-    }
-    var obj = this;
-    function recordAndPlay() {
-
-        if (mouseDown) {
-            if (htSelectedDisplayObjectPosition) {
-                this.animationObject.push({ obj: "", frame: obj.Frame, x: htSelectedDisplayObjectPosition.x, y: htSelectedDisplayObjectPosition.y });
-            } else {
-                this.animationObject.push({ obj: "", frame: obj.Frame, x: oSelectedDisplayObject.x, y: oSelectedDisplayObject.y });
-            }
-        }
-
-        obj.Frame++;
-        if (startRec) {
-            window.requestAnimationFrame(recordAndPlay);
-        } else {
-            console.log("stop rec");
-        }
-
-    }
-    this.rec = function () {
-        startRec = true;
-        recordAndPlay();
-    }
-    this.stopRec = function () {
-        startRec = false;
-    }
+    checkAnimation();
     return this;
 }
