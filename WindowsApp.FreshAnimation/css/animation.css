@@ -1,0 +1,51 @@
+﻿body {
+}
+
+.appGrid {
+    width: 100vw;
+    height: 100vh;
+    display: -ms-grid;
+    -ms-grid-columns: 16rem 1fr;
+    -ms-grid-rows: 10rem 1fr;
+}
+
+.timeline {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    -ms-grid-column-span: 2;
+    opacity: 0.4;
+    border-radius: 0.5rem 0.5rem;
+   
+    margin: 1rem;
+}
+
+.canvas {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+    width: 100vw;
+    height: 100vh;
+    -ms-grid-column-span: 2;
+    -ms-grid-row-span: 2;
+}
+
+.menu {
+    -ms-grid-column: 1;
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 2;
+    opacity: 0.4;
+    border-radius: 0.5rem 0.5rem;
+    
+    margin: 1rem;
+}
+
+@media screen and (-ms-view-state: fullscreen-landscape) {
+}
+
+@media screen and (-ms-view-state: filled) {
+}
+
+@media screen and (-ms-view-state: snapped) {
+}
+
+@media screen and (-ms-view-state: fullscreen-portrait) {
+}
