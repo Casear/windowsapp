@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="/js/menu.js"></script>
+    </head>
+    <body>
+
+        <div id="mediumListIconTextTemplate" data-win-control="WinJS.Binding.Template">
+            <div>
+
+                <!-- Displays the "title" field. -->
+                <h4 data-win-bind="innerText: title"></h4>
+
+            </div>
+        </div>
+        <div data-win-control="WinJS.UI.ListView" 
+            data-win-options="{ itemDataSource : DataExample.itemList.dataSource,
+            itemTemplate: select('#mediumListIconTextTemplate')}"></div>
+    </body>
+</html>
