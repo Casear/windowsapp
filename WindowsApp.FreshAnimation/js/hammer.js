@@ -711,7 +711,7 @@ function Hammer(element, options, undefined) {
         addEvent(element, "touchstart touchmove touchend touchcancel", handleEvents);
     } else if (navigator.msPointerEnabled) {
         addEvent(element, "MSPointerDown MSPointerUp MSPointerMove", handleEvents);
-        addEvent(element, "MSPointerCancel", function (e) { removeTouchPoint(e); }, false);
+      //  addEvent(element, "MSPointerCancel", function (e) { removeTouchPoint(e); }, false);
         addEvent(element, "MSGestureInit", function (e) { if (e.preventManipulation) e.preventManipulation(); }, false);
         addEvent(element, "MSHoldVisual", function (e) { e.preventDefault(); }, false);
 

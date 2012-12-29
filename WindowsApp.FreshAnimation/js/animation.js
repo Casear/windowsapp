@@ -8,11 +8,11 @@
     this.Frame = 0;
     this.animationObjId = null;
     this.animationObj = {};
-
+    
     this.animationFrame = {};
-    this.images = [];
-    this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
+    this.images = [];  
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
+    this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "ground", url: "/animation/pi/ground.png" });
     var _folder = Windows.Storage.ApplicationData.current.localFolder;
     _folder.createFolderAsync("projects\\" + projectId + "\\slide", Windows.Storage.CreationCollisionOption.openIfExists);
@@ -81,7 +81,7 @@
             }
             if (obj.Frame % 40 == 0) {
                 var image = oLayer.getElement().toDataURL();
-               
+
                 var worker = new Worker("/js/imageGenerator.js");
                 worker.postMessage({
                     frame: obj.Frame, content: image.replace(/^data:image\/(png|jpg);base64,/, ""), projectId: projectId
@@ -129,8 +129,12 @@
             obj.animationObj[obj.animationObjId].set("angle", obj.animationFrame[playFrame][node].v);
         }
     }
-    this.animationObj["sky"] = new collie.MovableObject({ backgroundImage: "sky" });
-    this.animationObj["sky"].addTo(oLayer);
+
+    this.setImage = function (title) {
+        this.animationObj[title] = new collie.MovableObject({ backgroundImage: title });
+        this.animationObj[title].addTo(oLayer);
+    }
+    
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();

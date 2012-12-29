@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" StartPage="animation.html">
+    <Application Id="App" StartPage="page.html">
       <VisualElements DisplayName="FreshAnimation" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="a" ForegroundText="light" BackgroundColor="#F08A21">
         <DefaultTile ShowName="noLogos" WideLogo="images\wlogo.png" />
         <SplashScreen Image="images\splashscreen.png" />

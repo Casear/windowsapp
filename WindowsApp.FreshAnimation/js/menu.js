@@ -22,20 +22,18 @@
             anx.setAnimation($(this).data('title'));
         };
 
+        var addImage = function(ev){
+            
+            anx.setImage($(this).data('title'));
+        };
+
         for (var i = 0; i < imgs.length; i++) {
-            var item = $('<div class="smallListIcon" />')
+            var item = $('<button class="smallListItem" />')
                 .data('title', imgs[i].title)
             .append($('<img  />').attr('src', imgs[i].url))
             .append($('<span />').text(imgs[i].title))
-                .hammer({
-                                    drag_min_distance: 0,
-                                    drag_horizontal: true,
-                                    drag_vertical: true,
-                                    transform: false,
-                                    hold: false,
-                                    prevent_default: true
-                                })
-            .on('tap', tapHandler)
+            .hammer({})
+            .on('doubletap', addImage)
             .on('hold', tapHandler)
             .on('release', function () {
                 anx.setAnimation(null);

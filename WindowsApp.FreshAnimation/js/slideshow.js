@@ -1,5 +1,5 @@
 ﻿function slideshow() {
-
+    var slide = $('#slide');
 
 
 
