@@ -25,32 +25,22 @@
             window.animination = AnimationObjectManager("container", "pi", function () {
                
             });
-            $('#rec').click(function () {
-                
-            });
-
-            $('#stop').click(function () {
-                animination.stopRec();
-            });
-
-            $('#play').click(function () {
-                animination.play();
-            });
+           
 
             $('#timelineRecord').toggle(
                   function (evt) {
-                      //animination.rec();
+                      animination.rec();
                       $('img', this).attr('src', 'images/record_n.png');
                   },
                   function () {
-                      //animination.stopRec();
+                      animination.stopRec();
                       $('img', this).attr('src', 'images/record_p.png');
                   }
             );
 
             $('#timelinePlay').toggle(
                   function (evt) {
-                      //animination.rec();
+                      animination.play();
                       $('img', this).attr('src', 'images/play_n.png');
                   },
                   function () {
@@ -72,12 +62,6 @@
                 <img src="images/record_p.png"  class="timelineIcon" />
             </div>
             <div id="timelineBar">
-
-
-                <input type="button" value="Rec" id="rec" />
-                <input type="button" value="Stop" id="stop" />
-
-                <input type="button" value="Play" id="play" />
 
                 <label id="fps">0</label>
             </div>
