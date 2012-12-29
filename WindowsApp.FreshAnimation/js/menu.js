@@ -1,19 +1,9 @@
 ﻿(function () {
     "use strict";
 
-    var dataArray = [
-    { title: "Basic banana", text: "Low-fat frozen yogurt"  },
-    { title: "Banana blast", text: "Ice cream"},
-    { title: "Brilliant banana", text: "Frozen custard"},
-    { title: "Orange surprise", text: "Sherbet"},
-    { title: "Original orange", text: "Sherbet"},
-    { title: "Vanilla", text: "Ice cream"},
-    { title: "Very vanilla", text: "Frozen custard"},
-    { title: "Marvelous mint", text: "Gelato"},
-    { title: "Succulent strawberry", text: "Sorbet"}
-    ];
 
-    var dataList = new WinJS.Binding.List(dataArray);
+    var dataList = new WinJS.Binding.List(window.animination.images);
+
 
 
     var tools = new WinJS.Binding.List([
@@ -51,10 +41,6 @@
                 });
             }
 
-            console.log(window.animination);
-            
-            
-            
 
             listView.addEventListener("iteminvoked", itemInvokedHandler, false);
             //lvTools.addEventListener("MSPointerDown", toolsInvokedHandler, false);
