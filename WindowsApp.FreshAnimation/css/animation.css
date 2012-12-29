@@ -15,7 +15,7 @@
     -ms-grid-column-span: 2;
     opacity: 0.4;
     border-radius: 0.5rem 0.5rem;
-   
+   background-color:white;
     margin: 1rem;
 }
 
@@ -34,7 +34,7 @@
     -ms-grid-row-span: 2;
     opacity: 0.4;
     border-radius: 0.5rem 0.5rem;
-    
+    background-color:white;
     margin: 1rem;
 }
 
