@@ -3,6 +3,7 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     var projectId = _projectId;
     var canvasId = _canvasId;
     var animationName = null;
+    var drag = true;
     var startRec = false;
     var startPlay = false;
     var animationO;
@@ -15,6 +16,8 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     this.images.push({ title: "sky", url: "/animation/pi/sky.png" });
     this.images.push({ title: "sea", url: "/animation/pi/sea.png" });
     this.images.push({ title: "ground", url: "/animation/pi/ground.png" });
+    this.images.push({ title: "man", url: "/animation/pi/man.png" });
+    this.images.push({ title: "leaf", url: "/animation/pi/leaf.png" });
     var _folder = Windows.Storage.ApplicationData.current.localFolder;
     _folder.createFolderAsync("projects\\" + projectId + "\\slide", Windows.Storage.CreationCollisionOption.openIfExists);
     var time = $('.film').offset({ left: 1300 });
@@ -44,11 +47,26 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
 
     this.play = function () {
         startPlay = true;
+        var time = $('.film').offset({ left: 1300 });
+        obj.Frame = 0;
 
+        this.animationObj["man"].move(1000,200 );
+        this.animationObj["man"].set("angle", 0);
+        this.animationObj["leaf"] .move( 1200, 200 );
+        this.animationObj["leaf"].set("angle", 0);
     }
     var lastCalledTime;
     var fps;
+    this.closeDragEvent = function () {
 
+        drag = false;
+
+    }
+    this.openDragEvent = function () {
+
+        drag = true;
+
+    }
     function requestAnimFrame() {
 
         if (!lastCalledTime) {
@@ -69,17 +87,25 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
                 if (!obj.animationFrame[obj.Frame])
                     obj.animationFrame[obj.Frame] = {};
                 var x = 0, y = 0, v = 0;
+                var ox = 0, oy = 0, ov = 0;
                 if (mouseDown && htSelectedDisplayObjectPosition) {
                     x = obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x;
                     y = obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y;
-                   
-                } else {
-                    x = obj.animationObj[obj.animationObjId].get("x");
-                    y = obj.animationObj[obj.animationObjId].get("y");
+                    if (!obj.animationFrame[obj.Frame][obj.animationObjId]) {
+                        obj.animationFrame[obj.Frame][obj.animationObjId] = {};
+                    }
+                    obj.animationFrame[obj.Frame][obj.animationObjId].x = x;
+                    obj.animationFrame[obj.Frame][obj.animationObjId].y = y;
                 }
-                v = obj.animationObj[obj.animationObjId].get("angle");
+                if (!drag) {
+                    if (!obj.animationFrame[obj.Frame][obj.animationObjId]) {
+                        obj.animationFrame[obj.Frame][obj.animationObjId] = {};
+                    }
+                    v = obj.animationObj[obj.animationObjId].get("angle");
+                    obj.animationFrame[obj.Frame][obj.animationObjId].v = v;
+                }
                 //if (obj.animationFrame[obj.Frame][obj.animationObjId]) {
-                obj.animationFrame[obj.Frame][obj.animationObjId] = { obj: obj.animationObjId, x: x, y: y, v: v };
+
                 //}
 
             }
@@ -91,20 +117,27 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
                     frame: obj.Frame, content: image.replace(/^data:image\/(png|jpg);base64,/, ""), projectId: projectId
                 });
             }
-            
+
         }
-        if ( timePlay) {
-            
+        if (timePlay) {
+
             if (this.animationFrame[obj.Frame]) {
                 for (var node in obj.animationFrame[obj.Frame]) {
-                    obj.animationObj[node].move(obj.animationFrame[obj.Frame][node].x, obj.animationFrame[obj.Frame][node].y);
-                    obj.animationObj[node].set("angle", obj.animationFrame[obj.Frame][node].v);
-                    
-                    };
+                    var x = obj.animationObj[node].get("x");
+                    var y = obj.animationObj[node].get("y");
+                    if (obj.animationFrame[obj.Frame][node].x)
+                        x = obj.animationFrame[obj.Frame][node].x;
+                    if (obj.animationFrame[obj.Frame][node].y)
+                        y = obj.animationFrame[obj.Frame][node].y;
+                    obj.animationObj[node].move(x, y);
+                    if (obj.animationFrame[obj.Frame][node].v)
+                        obj.animationObj[node].set("angle", obj.animationFrame[obj.Frame][node].v);
+
+                };
             }
             obj.Frame++;
         }
-        
+
         requestAnimFrame();
         window.requestAnimationFrame(checkAnimation);
     }
@@ -128,7 +161,7 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     }
     this.setAngle = function (angle) {
         if (obj.animationObjId) {
-          
+
             obj.animationObj[obj.animationObjId].set("angle", angle);
         }
     }
@@ -143,31 +176,23 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     collie.Renderer.addLayer(oLayer);
     collie.Renderer.load(document.getElementById(canvasId));
     collie.Renderer.start();
+    this.animationObj["sky"] = new collie.MovableObject({ backgroundImage: "sky" });
+    this.animationObj["sky"].addTo(oLayer);
+    this.animationObj["sea"] = new collie.MovableObject({ backgroundImage: "sea" ,y:300});
+    this.animationObj["sea"].addTo(oLayer);
+    this.animationObj["ground"] = new collie.MovableObject({ backgroundImage: "ground" ,y:500});
+    this.animationObj["ground"].addTo(oLayer);
+    this.animationObj["man"] = new collie.MovableObject({ backgroundImage: "man" ,x:1000,y:200 });
+    this.animationObj["man"].addTo(oLayer);
+    this.animationObj["leaf"] = new collie.MovableObject({ backgroundImage: "leaf", x: 1200, y: 200 });
+    this.animationObj["leaf"].addTo(oLayer);
     time.hammer({
-        swipe_time:2000
+        swipe_time: 2000
     }).bind("hold", function (ev) {
         timePlay = false;
         console.log("touch");
-    }).bind("swipe", function (ev) {
-
-        var off = time.offset();
-        if (ev.angle > 90) {
-            time.animate({
-                left: '-=600'
-            },
-            1000
-            );
-        } else {
-            time.animate({
-                left: '+=600'
-            },
-        1000
-        );
-
-        }
-
     }).bind("drag", function (ev) {
-       
+
         if (!htTimeStartPosition) {
             htTimeStartPosition = { x: ev.position.x, y: ev.position.y };
             htTimeSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
@@ -194,18 +219,19 @@ function AnimationObjectManager(_canvasId, _projectId, callback) {
     $(oLayer.getElement()).hammer({
 
     }).bind("drag", function (ev) {
+        if (drag) {
+            mouseDown = true;
+            if (!htStartPosition) {
+                htStartPosition = { x: ev.position.x, y: ev.position.y };
+                htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+            } else {
+                htStartPosition = htSelectedDisplayObjectPosition;
+                htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
+                if (obj.animationObjId) {
+                    if (htSelectedDisplayObjectPosition) {
+                        obj.animationObj[obj.animationObjId].move(obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y)
 
-        mouseDown = true;
-        if (!htStartPosition) {
-            htStartPosition = { x: ev.position.x, y: ev.position.y };
-            htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
-        } else {
-            htStartPosition = htSelectedDisplayObjectPosition;
-            htSelectedDisplayObjectPosition = { x: ev.position.x, y: ev.position.y };
-            if (obj.animationObjId) {
-                if (htSelectedDisplayObjectPosition) {
-                    obj.animationObj[obj.animationObjId].move(obj.animationObj[obj.animationObjId].get("x") + htSelectedDisplayObjectPosition.x - htStartPosition.x, obj.animationObj[obj.animationObjId].get("y") + htSelectedDisplayObjectPosition.y - htStartPosition.y)
-                    console.log("Move ", obj.animationObj[obj.animationObjId].get("x") + htStartPosition.x - htSelectedDisplayObjectPosition.x, obj.animationObj[obj.animationObjId].get("y") + htStartPosition.y - htSelectedDisplayObjectPosition.y);
+                    }
                 }
             }
         }

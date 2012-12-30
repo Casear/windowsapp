@@ -119,7 +119,7 @@
 
                         for (var img in imgs) {
                             
-                            var x = imgs[img].get('x') - dir * 50;
+                            var x = imgs[img].get('x') - dir * 10;
 
                             imgs[img].set('x', x);
 
@@ -164,13 +164,14 @@
                            
                         }
                     });
-
+                    window.animination.closeDragEvent();
                     $(this).after(getToolsByMoving(
                         circle,
                         { x: evt.originalEvent.x, y: evt.originalEvent.y }));
                 }
                 else {
                     $(this).parent().children('div').remove();
+                    window.animination.openDragEvent();
                 }
 
             });

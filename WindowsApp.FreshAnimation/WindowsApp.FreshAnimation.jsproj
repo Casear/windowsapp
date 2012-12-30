@@ -55,12 +55,16 @@
     </AppxManifest>
     <Content Include="animation.html" />
     <Content Include="animation\pi\ground.png" />
+    <Content Include="animation\pi\leaf.png" />
+    <Content Include="animation\pi\man.png" />
     <Content Include="animation\pi\sea.png" />
     <Content Include="animation\pi\sky.png" />
     <Content Include="css\animation.css" />
     <Content Include="css\default.css" />
     <Content Include="html\menu.html" />
+    <Content Include="images\leaf.png" />
     <Content Include="images\logo.png" />
+    <Content Include="images\man.png" />
     <Content Include="images\smallBackground.png" />
     <Content Include="images\smalllog.png" />
     <Content Include="images\smalllogo.png" />
